@@ -2,9 +2,11 @@
 
 This repository is work in progress. We attempt to implement of Extropic's Stoichastic Processing Unit in Verilog and build a 16 bit model in Altium. Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
 
-**Very high level overview of our proposed implementation:**
+**Very high level overview of our proposed implementation (Top --> Bottom modules)**
 
-_Top level processor (controls and schedules EBM sampling and training) --> quadratic energy model implemented on 70x70 grid of binary nodes with G12 [1] connectivity  --> weight memory (i.e store and load the weights for the current time step)
+Top level processor (controls and schedules EBM sampling and training) --> 
+quadratic energy model implemented on 70x70 grid of binary nodes with G12 [1] connectivity  --> 
+Weight memory (i.e store and load the weights for the current time step)
 
 **Brief Background**
 
