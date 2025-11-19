@@ -83,14 +83,13 @@ module RippleAdd #(parameter int number_size = 16)(
     genvar i;
 
     generate
-        for (i = 0; i < number_size; i = i + 1) 
-        begin:
-            FA inst(
-                a[i],
-                b[i],
-                carry[i],
-                sum[i],
-                carry[i+1]
+        for (i = 0; i < number_size; i = i + 1) begin : gen_add
+            FA inst (
+                .a(a[i]),
+                .b(b[i]),
+                .cin(carry[i]),
+                .sum(sum[i]),
+                .cout(carry[i+1])
             );
         end
     endgenerate
@@ -110,9 +109,14 @@ module RippleSubtract #(parameter int number_size = 16)(
     genvar i;
 
     generate
-        for (i = 0; i < number_size; i = i + 1) 
-        begin:
-            FS inst(a[i],b[i],carry[i],sum[i],carry[i+1]);
+        for (i = 0; i < number_size; i = i + 1) begin : gen_sub
+            FS inst(
+                .a(a[i]),
+                .b(b[i]),
+                .cin(carry[i]),
+                .dif(sum[i]),
+                .cout(carry[i+1])
+            );
         end
     endgenerate
     assign cout = carry[number_size];
@@ -122,13 +126,17 @@ endmodule
 // 16 bit adder
 
 module Add16(
-    input  logic [16:0] v1,
-    input  logic [16:0] v2,
-    output logic [16:0] v3,
+    input  logic signed [15:0] v1,
+    input  logic signed [15:0] v2,
+    output logic signed [15:0] v3,
     output logic cout);
 
     RippleAdd #(16) ra (
-    v1, v2, 1'b0, v3, cout
+        .a(v1),
+        .b(v2),
+        .cin(1'b0),
+        .sum(v3),
+        .cout(cout)
     );
 endmodule
 
@@ -140,7 +148,7 @@ module Multiplier #(parameter int number_size = 16)(
     output logic signed [number_size-1:0] m3    // our number is <1 in magnitude so the number_size-1 size works
 );
     logic signed [(2*number_size)-1:0] full_p;
-    assign full_p = m1 * m2;   // future replace with raw multiplier
+    assign full_p = m1 * m2;  
     assign m3 = full_p[number_size-1:0];
 endmodule
 
@@ -149,8 +157,15 @@ module GT #(parameter int number_size = 16)(
     input  logic signed [number_size-1:0] m2,
     output logic out
 );
-wire temp, temp2;
-RippleSubtract #(number_size) rs (m1, m2, 1'b0, , temp);
+wire temp;
+wire signed [number_size-1:0] diff;
+RippleSubtract #(number_size) rs (
+    .a(m1),
+    .b(m2),
+    .cin(1'b0),
+    .sum(diff),
+    .cout(temp)
+);
 
 
 assign out = ~temp;
@@ -162,42 +177,74 @@ module Boltzmann #(
     parameter int number_size = 16,
     parameter int CLOCK_FREQ = 50_000_000
 )(
-    input logic clk,
-    input real noise,
-    input on;
-    input logic train,  // future
-    input logic sample,  // future
-    input logic[3:0] neighbours,
-    input logic signed [number_size-1:0] weight1,
-    input logic signed [number_size-1:0] weight2,
-    input logic signed [number_size-1:0] weight3,
-    input logic signed [number_size-1:0] weight4,
-    input logic signed [number_size-1:0] bias,
+    input  logic clk,
+    input  real noise,
+    input  logic on,
+    input  logic train,  // future
+    input  logic sample, // future
+    input  logic [3:0] neighbours,
+    input  logic signed [number_size-1:0] weight1,
+    input  logic signed [number_size-1:0] weight2,
+    input  logic signed [number_size-1:0] weight3,
+    input  logic signed [number_size-1:0] weight4,
+    input  logic signed [number_size-1:0] bias,
     output logic node
 );
-    wire signed [number_size-1:0] term1, term2, term3, term4, sum12, sum34, probability;
+    // fixed-point terms (signed)
+    wire signed [number_size-1:0] term1, term2, term3, term4;
+    wire signed [number_size-1:0] sum12, sum34, probability;
+    real probability_real;
+    real prob_real;
+    wire node_decision;
 
-    // sum of weights*neighbours
-    Multiplier #(number_size) mult1(weight1,{{(number_size-1){1'b0}}, neighbours[0]}, .m3(term1));
-    Multiplier #(number_size) mult1(weight2,{{(number_size-1){1'b0}}, neighbours[1]}, .m3(term1));
-    Multiplier #(number_size) mult1(weight3,{{(number_size-1){1'b0}}, neighbours[2]}, .m3(term1));
-    Multiplier #(number_size) mult1(weight4,{{(number_size-1){1'b0}}, neighbours[3]}, .m3(term1));
-    Add16(term1, term2, sum12);
-    Add16(term3, term4, sum34);
+    Multiplier #(number_size) mult1 (
+        .m1(weight1),
+        .m2({{(number_size-1){1'b0}}, neighbours[0]}),
+        .m3(term1)
+    );
+    Multiplier #(number_size) mult2 (
+        .m1(weight2),
+        .m2({{(number_size-1){1'b0}}, neighbours[1]}),
+        .m3(term2)
+    );
+    Multiplier #(number_size) mult3 (
+        .m1(weight3),
+        .m2({{(number_size-1){1'b0}}, neighbours[2]}),
+        .m3(term3)
+    );
+    Multiplier #(number_size) mult4 (
+        .m1(weight4),
+        .m2({{(number_size-1){1'b0}}, neighbours[3]}),
+        .m3(term4)
+    );
+
+    wire add_cout_unused1, add_cout_unused2;
+    Add16 addA (
+        .v1(term1),
+        .v2(term2),
+        .v3(sum12),
+        .cout(add_cout_unused1)
+    );
+    Add16 addB (
+        .v1(term3),
+        .v2(term4),
+        .v3(sum34),
+        .cout(add_cout_unused2)
+    );
+
     assign probability = sum12 + sum34 + bias;
 
-    Sigmoid(probability, prob);
+    assign probability_real = $itor(probability);
 
-    node = prob > noise;
+    Sigmoid(probability_real, prob_real);
 
-    always_ff @(posedge clk or negedge on) 
-    begin
+    assign node_decision = (prob_real > noise);
+
+    always_ff @(posedge clk or negedge on) begin
         if (!on)
-            node <= 1'b0;    // initiallized when off / node reset back to 0
-        else if (on)
-            node <= node;
+            node <= 1'b0;
         else
-            node <= (probability >= 0);
+            node <= node_decision;
     end
 
 endmodule
