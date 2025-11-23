@@ -1,6 +1,12 @@
 **Summary**
 
-This repository is work in progress. We attempt to build a simple version of Extropic's Stoichastic Processing Unit in Verilog and build a 16 bit version in Xschem, Ngspice, Magic VLSI, Netgen. Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
+This repository is work in progress. We attempt to:
+
+(1) Build a simple version of Extropic's Stoichastic Processing Unit in Verilog, Xschem, Magic VLSI.
+
+(2) Build an Altium (PCB) version. This will use Zener noise for the pbit (RNG) instead of CMOS capacitive node noise since the capacitance of PCB sized components (+ traces) is too high for the latter
+
+Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
 
 **Very high level overview of our proposed implementation (Top --> Bottom modules)**
 
