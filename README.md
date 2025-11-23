@@ -8,13 +8,15 @@ This repository is work in progress. We attempt to:
 
 Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
 
-**Very high level overview of our proposed implementation (Top --> Bottom modules)**
+**Very high level summary of proposed structure**
 
-Top level processor (controls and schedules EBM sampling and training) --> 
-quadratic energy model implemented on 70x70 grid of binary nodes with G12 [1] connectivity  --> 
-Weight memory (i.e store and load the weights for the current time step)
+A processor connected to
 
-Top level processor <--> Pbit Wrapper <--> Analog RNG source
+(1) EBM Weight/Bias Memory (SRAM) 
+
+(2) Registers for previous state of EBM ($\vecX_{t-1}$) and other needed temporary values like clock 
+
+(3) interface to 70×70 grid of (analog) Pbits which recieve the weights and biases and output the bit flip for each node
 
 **Brief Background**
 
