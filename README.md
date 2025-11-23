@@ -24,6 +24,18 @@ We train the 70x70 network at each time step individually. Like a diffusion mode
 
 <img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/11e3a7e4-c78b-415e-9cfd-6a18c4bfae59" />
 
+This section details the physical mechanism by which the Extropic architecture generates and samples the thermal randomness required for its probabilistic computations.
+
+## PBit (thermodynamics noise for EBM bit flips)
+
+<img width="750" height="388" alt="image" src="https://github.com/user-attachments/assets/9143b9de-6d19-452e-8802-f72def92c3b0" />
+
+A MOSFET has three parallel capacitances; gate capacitance, source-drain capacitance, and capacitance between the wire connected to the source and drain. For a capacitive node, $V_{rms, noise} = \sqrt{\frac{k_B T}{C_{total}}}$. High capacitance leads to weaker noise and works against us; we want small MOSFETS with very short wiring to reduce total capacitance. 
+
+The noisy voltage  must be converted from a analog to digital. This is done using a comparator which triggers at a clock signal and outputs 1 or 0 based on that instant's voltage noise. The comparitor switching voltage is the voltage at which we bias the MOSFET to be in the triode region.
+
+We have one **P-bit** per **Node** in the EBM. We "bias" the P-bit based on that nodes incoming weights and biases. The result of the P-Bit is the state of the node in the next time step. In the triode region, MOSFET conductance is controller by gate voltage. Conductance sets the base voltage accross the mosfet, so we convert our sum of incoming weights and the node bias into a desired conductance. 
+
 **References**
 
 [1] Andraž Jelinčič et al, "An efficient probabilistic hardware architecture for diffusion-like models" (https://arxiv.org/pdf/2510.23972)
