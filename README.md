@@ -14,7 +14,7 @@ Top level processor (controls and schedules EBM sampling and training) -->
 quadratic energy model implemented on 70x70 grid of binary nodes with G12 [1] connectivity  --> 
 Weight memory (i.e store and load the weights for the current time step)
 
-Top level processor (controls and schedules EBM sampling and training) --> Pbit Wrapper --> Analog RNG source
+Top level processor --> Pbit Wrapper --> Analog RNG source
 
 **Brief Background**
 
