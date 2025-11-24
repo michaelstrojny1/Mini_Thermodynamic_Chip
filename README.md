@@ -16,7 +16,7 @@ A processor connected to
 
 (1) EBM Weight/Bias Memory (SRAM) 
 
-(2) Registers for previous state of EBM ($\vecX_{t-1}$) and other needed temporary values like clock 
+(2) Registers for previous state of EBM and other needed temporary values like clock 
 
 (3) Interface to 70×70 grid of (analog) Pbits which recieve the weights and biases and output the bit flip for each node
 
