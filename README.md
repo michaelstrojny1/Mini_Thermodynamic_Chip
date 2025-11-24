@@ -10,7 +10,7 @@ This repository is work in progress. We attempt to:
 
 Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
 
-**Very high level summary of proposed structure**
+**Very high level summary of the proposed structure**
 
 A processor connected to
 
@@ -18,7 +18,7 @@ A processor connected to
 
 (2) Registers for previous state of EBM ($\vecX_{t-1}$) and other needed temporary values like clock 
 
-(3) interface to 70×70 grid of (analog) Pbits which recieve the weights and biases and output the bit flip for each node
+(3) Interface to 70×70 grid of (analog) Pbits which recieve the weights and biases and output the bit flip for each node
 
 **Brief Background**
 
