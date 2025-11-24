@@ -30,7 +30,7 @@ We train the 70x70 network at each time step individually. Like a diffusion mode
 
 This section details the physical mechanism by which the Extropic architecture generates and samples the thermal randomness required for its probabilistic computations.
 
-## PBit (thermodynamics noise for EBM bit flips)
+## PBit (EBM Samping)
 
 <img width="750" height="388" alt="image" src="https://github.com/user-attachments/assets/9143b9de-6d19-452e-8802-f72def92c3b0" />
 
