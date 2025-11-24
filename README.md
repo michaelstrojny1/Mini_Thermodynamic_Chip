@@ -1,4 +1,6 @@
-**Summary**
+# Mini Thermodynamic Chip
+
+## Summary
 
 This repository is work in progress. We attempt to:
 
@@ -29,6 +31,8 @@ We train the 70x70 network at each time step individually. Like a diffusion mode
 <img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/11e3a7e4-c78b-415e-9cfd-6a18c4bfae59" />
 
 This section details the physical mechanism by which the Extropic architecture generates and samples the thermal randomness required for its probabilistic computations.
+
+## Components
 
 ## PBit (EBM Samping)
 
