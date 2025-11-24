@@ -6,7 +6,7 @@ This repository is work in progress. We attempt to:
 
 (1) Build a simple version of Extropic's Stoichastic Processing Unit in Verilog, Xschem, Magic VLSI. We will simulate semiconductor physics in Spice.
 
-(2) Build an Altium (PCB) version. This will use Zener Avalanche noise for noise generation (for gibbs sampling) instead of CMOS capacitive node noise used by Extropic since the capacitance of PCB sized components and between the traces feeding into it is too high for the latter.
+(2) Build an Altium (PCB) version. This will use Zener Avalanche noise for noise generation (for gibbs sampling) instead of CMOS capacitive node noise used by Extropic since the capacitance of PCB sized components, and the capacitance between the traces feeding into components, is too high for the latter.
 
 Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
 
