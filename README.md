@@ -1,24 +1,4 @@
-# Mini Thermodynamic Chip
-
-## Summary
-
-This repository is work in progress. We attempt to:
-
-(1) Build a simple version of Extropic's Stoichastic Processing Unit in Verilog, Xschem, Magic VLSI. We will simulate semiconductor physics in Spice.
-
-(2) Build an Altium (PCB) version. This will use Zener Avalanche noise for noise generation (for gibbs sampling) instead of CMOS capacitive node noise used by Extropic since the capacitance of PCB sized components, and the capacitance between the traces feeding into components, is too high for the latter.
-
-Our architecture follows Extropic's Paper, "An efficient probabilistic hardware architecture for diffusion-like models" by Andraž Jelinčič et al (https://arxiv.org/pdf/2510.23972) [1].
-
-**Very high level summary of the proposed structure**
-
-A processor connected to
-
-(1) EBM Weight/Bias Memory (SRAM) 
-
-(2) Registers for previous state of EBM and other needed temporary values like clock 
-
-(3) Interface to 70×70 grid of (analog) Pbits which recieve the weights and biases and output the bit flip for each node
+# Thermodynamic Chip For Quantum Simulation
 
 **Brief Background**
 
