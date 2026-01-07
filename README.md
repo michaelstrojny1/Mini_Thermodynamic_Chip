@@ -1,4 +1,4 @@
-# Mini Thermodynamic Chip
+# Mini Thermodynamic Chip (Extropic [1] Arxiv Paper Architecture but connectivity is an RBM)
 
 **Brief Background**
 
