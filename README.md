@@ -1,4 +1,4 @@
-# Thermodynamic Chip For Quantum Simulation
+# Mini Thermodynamic Chip
 
 **Brief Background**
 
